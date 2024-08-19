@@ -1,0 +1,146 @@
+{% extends 'sistema/base.html' %}
+
+{% block content %}
+  <div class="container mt-5">
+    <!-- Formulário de Inclusão/Alteração -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalExemplo">
+          Adicionar
+        </button>
+      </div>
+      <div class="modal fade" id="modalExemplo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Cadastro de Tecnicos</h5>
+              
+            </div>
+            <div class="modal-body">
+              <form id="crudForm">
+                <div class="mb-3">
+                  <label for="id" class="form-label">ID</label>
+                  <input type="text" class="form-control" id="id" placeholder="ID" disabled>
+                </div>
+                <div class="mb-3">
+                  <label for="nome" class="form-label">Nome</label>
+                  <input type="text" class="form-control" id="nome" placeholder="Nome">
+                </div>
+                <div class="mb-3">
+                  <label for="email" class="form-label">Email</label>
+                  <input type="email" class="form-control" id="email" placeholder="Email">
+                </div>
+                <button type="submit" class="btn btn-primary">Salvar</button>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+            </div>
+          </div>
+        </div>
+      
+
+    </div>
+  </div>
+
+  <!-- Tabela de Registros -->
+  <div class="card">
+    <div class="card-header">
+      <h3>Lista de Registros</h3>
+    </div>
+    <div class="card-body">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Nome</th>
+            <th scope="col">Email</th>
+            <th scope="col">Ações</th>
+          </tr>
+        </thead>
+        <tbody id="recordsTable">
+          <!-- Os registros serão inseridos aqui -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      let records = [];
+      let editIndex = -1;
+
+      const form = document.getElementById('crudForm');
+      const idInput = document.getElementById('id');
+      const nomeInput = document.getElementById('nome');
+      const emailInput = document.getElementById('email');
+      const recordsTable = document.getElementById('recordsTable');
+
+      form.addEventListener('submit', function (event) {
+        event.preventDefault();
+        const nome = nomeInput.value;
+        const email = emailInput.value;
+
+        if (editIndex === -1) {
+          // Adicionar registro
+          const newRecord = {
+            id: records.length + 1,
+            nome: nome,
+            email: email
+          };
+          records.push(newRecord);
+        } else {
+          // Alterar registro
+          records[editIndex].nome = nome;
+          records[editIndex].email = email;
+          editIndex = -1;
+        }
+
+        resetForm();
+        renderTable();
+      });
+
+      function renderTable() {
+        recordsTable.innerHTML = '';
+        records.forEach((record, index) => {
+          const row = document.createElement('tr');
+
+          row.innerHTML = `
+              <th scope="row">${record.id}</th>
+              <td>${record.nome}</td>
+              <td>${record.email}</td>
+              <td>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalExemplo" onclick="editRecord(${index})">Alterar</button>
+                <button class="btn btn-danger btn-sm" onclick="deleteRecord(${index})">Excluir</button>
+              </td>
+            `;
+
+          recordsTable.appendChild(row);
+        });
+      }
+
+      window.editRecord = function (index) {
+        const record = records[index];
+        idInput.value = record.id;
+        nomeInput.value = record.nome;
+        emailInput.value = record.email;
+        editIndex = index;
+      };
+
+      window.deleteRecord = function (index) {
+        records.splice(index, 1);
+        renderTable();
+      };
+
+      function resetForm() {
+        idInput.value = '';
+        nomeInput.value = '';
+        emailInput.value = '';
+      }
+    });
+  </script>
+  {% endblock %}
+
+  

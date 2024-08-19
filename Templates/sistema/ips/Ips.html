@@ -1,0 +1,158 @@
+{% extends 'sistema/base.html' %}
+
+{% block content %}
+  <div class="container mt-5">
+    <!-- Formulário de Inclusão/Alteração -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalExemplo">
+          Adicionar
+        </button>
+      </div>
+      <div class="modal fade" id="modalExemplo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Cadastro de Tecnicos</h5>
+              
+            </div>
+            <div class="modal-body">
+              <form id="crudForm">
+                <div class="mb-3">
+                  <label for="id" class="form-label">ID</label>
+                  <input type="text" class="form-control" id="id" placeholder="ID" disabled>
+                </div>
+                <div class="mb-3">
+                  <label for="cnpj" class="form-label">Loja</label>
+                  <input type="text" class="form-control" id="cnpj" placeholder="Nome">
+                </div>
+                <div class="mb-3">
+                  <label for="setor" class="form-label">Setor</label>
+                  <input type="text" class="form-control" id="setor" placeholder="setor">
+                </div>
+                <div class="mb-3">
+                  <label for="ip" class="form-label">IP da MAquina</label>
+                  <input type="text" class="form-control" id="ip" placeholder="IP">
+                </div>
+                <button type="submit" class="btn btn-primary">Salvar</button>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+            </div>
+          </div>
+        </div>
+      
+
+    </div>
+  </div>
+
+  <!-- Tabela de Registros -->
+  <div class="card">
+    <div class="card-header">
+      <h3>Lista de Registros</h3>
+    </div>
+    <div class="card-body">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Razões</th>
+            <th scope="col">Setores</th>
+            <th scope="col">IPS</th>
+            <th scope="col">Ações</th>
+          </tr>
+        </thead>
+        <tbody id="recordsTable">
+          <!-- Os registros serão inseridos aqui -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      let records = [];
+      let editIndex = -1;
+
+      const form = document.getElementById('crudForm');
+      const idInput = document.getElementById('id');
+      const cnpjInput = document.getElementById('cnpj');
+      const setorInput = document.getElementById('setor');
+      const ipInput = document.getElementById('ip');
+      const recordsTable = document.getElementById('recordsTable');
+
+      form.addEventListener('submit', function (event) {
+        event.preventDefault();
+        const cnpj = cnpjInput.value;
+        const setor = setorInput.value;
+        const ip = ipInput.value;
+
+        if (editIndex === -1) {
+          // Adicionar registro
+          const newRecord = {
+            id: records.length + 1,
+            cnpj: cnpj,
+            setor: setor,
+            ip: ip
+          };
+          records.push(newRecord);
+        } else {
+          // Alterar registro
+          records[editIndex].cnpj = cnpj;
+          records[editIndex].setor = setor;
+          record[editIndex].ip = ip
+          editIndex = -1;
+        }
+
+        resetForm();
+        renderTable();
+      });
+
+      function renderTable() {
+        recordsTable.innerHTML = '';
+        records.forEach((record, index) => {
+          const row = document.createElement('tr');
+
+          row.innerHTML = `
+              <th scope="row">${record.id}</th>
+              <td>${record.cnpj}</td>
+              <td>${record.setor}</td>
+              <td>${record.ip}</td>
+              <td>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalExemplo" onclick="editRecord(${index})">Alterar</button>
+                <button class="btn btn-danger btn-sm" onclick="deleteRecord(${index})">Excluir</button>
+              </td>
+            `;
+
+          recordsTable.appendChild(row);
+        });
+      }
+
+      window.editRecord = function (index) {
+        const record = records[index];
+        idInput.value = record.id;
+        cnpjInput.value = record.cnpj;
+        setorInput.value = record.setor;
+        ipImput.value = record.ip;
+        editIndex = index;
+      };
+
+      window.deleteRecord = function (index) {
+        records.splice(index, 1);
+        renderTable();
+      };
+
+      function resetForm() {
+        idInput.value = '';
+        cnpjInput.value = '';
+        setorInput.value = '';
+        ipInput.value = '';
+      }
+    });
+  </script>
+  {% endblock %}
+
+  

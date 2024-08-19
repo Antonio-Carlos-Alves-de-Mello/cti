@@ -1,0 +1,170 @@
+{% extends 'sistema/base.html' %}
+
+{% block content %}
+  <div class="container mt-5">
+    <!-- Formulário de Inclusão/Alteração -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalExemplo">
+          Adicionar
+        </button>
+      </div>
+      <div class="modal fade" id="modalExemplo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Cadastro de Tecnicos</h5>
+              
+            </div>
+            <div class="modal-body">
+              <form id="crudForm">
+                <div class="mb-3">
+                  <label for="id" class="form-label">ID</label>
+                  <input type="text" class="form-control" id="id" placeholder="ID" disabled>
+                </div>
+                <div class="mb-3">
+                  <label for="razao" class="form-label">Razão Social</label>
+                  <input type="text" class="form-control" id="razao" placeholder="Razão Social">
+                </div>
+                <div class="mb-3">
+                  <label for="fantazia" class="form-label">Nome Fantazia</label>
+                  <input type="text" class="form-control" id="fantazia" placeholder="Nome Fantazia">
+                </div>
+                <div class="mb-3">
+                  <label for="cnpj" class="form-label">CNPJ</label>
+                  <input type="text" class="form-control" id="cnpj" placeholder="CNPJ">
+                </div>
+                <div class="mb-3">
+                  <label for="ie" class="form-label">Inscrição Social</label>
+                  <input type="text" class="form-control" id="ie" placeholder="Inscr.">
+                </div>
+                <button type="submit" class="btn btn-primary">Salvar</button>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+            </div>
+          </div>
+        </div>
+      
+
+    </div>
+  </div>
+
+  <!-- Tabela de Registros -->
+  <div class="card">
+    <div class="card-header">
+      <h3>Lista de Registros</h3>
+    </div>
+    <div class="card-body">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Razão Social</th>
+            <th scope="col">Nome Fantazia</th>
+            <th scope="col">CNPJ</th>
+            <th scope="col">Inscr.</th>
+            <th scope="col">Ações</th>
+          </tr>
+        </thead>
+        <tbody id="recordsTable">
+          <!-- Os registros serão inseridos aqui -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      let records = [];
+      let editIndex = -1;
+
+      const form = document.getElementById('crudForm');
+      const idInput = document.getElementById('id');
+      const razaoInput = document.getElementById('razao');
+      const fantaziaInput = document.getElementById('fantazia');
+      const cnpjInput = document.getElementById('cnpj');
+      const ieInput = document.getElementById('ie');
+      const recordsTable = document.getElementById('recordsTable');
+
+      form.addEventListener('submit', function (event) {
+        event.preventDefault();
+        const razao = razaoInput.value;
+        const fantazia = fantaziaInput.value;
+        const cnpj = cnpjInput.value;
+        const ie = ieInput.value;
+
+        if (editIndex === -1) {
+          // Adicionar registro
+          const newRecord = {
+            id: records.length + 1,
+            razao: razao,
+            fantazia: fantazia,
+            cnpj: cnpj,
+            ie: ie,
+          };
+          records.push(newRecord);
+        } else {
+          // Alterar registro
+          records[editIndex].razao = razao;
+          records[editIndex].fantazia = fantazia;
+          records[editIndex].cnpj = cnpj;
+          records[editIndex].ie = ie;
+          editIndex = -1;
+        }
+
+        resetForm();
+        renderTable();
+      });
+
+      function renderTable() {
+        recordsTable.innerHTML = '';
+        records.forEach((record, index) => {
+          const row = document.createElement('tr');
+
+          row.innerHTML = `
+              <th scope="row">${record.id}</th>
+              <td>${record.razao}</td>
+              <td>${record.fantazia}</td>
+              <td>${record.cnpj}</td>
+              <td>${record.ie}</td>
+              <td>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalExemplo" onclick="editRecord(${index})">Alterar</button>
+                <button class="btn btn-danger btn-sm" onclick="deleteRecord(${index})">Excluir</button>
+              </td>
+            `;
+
+          recordsTable.appendChild(row);
+        });
+      }
+
+      window.editRecord = function (index) {
+        const record = records[index];
+        idInput.value = record.id;
+        razaoInput.value = record.razao;
+        fantaziaInput.value = record.fantazia;
+        cnpjInput.value = record.cnpj;
+        ieInput.value = record.ie;
+        editIndex = index;
+      };
+
+      window.deleteRecord = function (index) {
+        records.splice(index, 1);
+        renderTable();
+      };
+
+      function resetForm() {
+        idInput.value = '';
+        razaoInput.value = '';
+        fantaziaInput.value = '';
+        cnpjInput.value ='';
+        ieInput.value = '';
+      }
+    });
+  </script>
+  {% endblock %}
+
+  
