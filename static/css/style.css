@@ -1,0 +1,238 @@
+/* Variáveis CSS para fácil manutenção */
+:root {
+    --font-family: 'Roboto', sans-serif;
+    --font-size: 1rem;
+    --color-primary: #8b69a0;
+    --color-secondary: #7fffd4;
+    --color-border: #1f6764;
+    --color-background-light: #1f6764;
+    --color-tab-hover: #5b9780;
+    --color-tab-active: #fff;
+    --header-height: 150px;
+    --header-padding: 5px;
+    --main-padding-top: 190px;
+    --tab-width: 700px;
+    --tab-padding: 10px 30px 40px;
+    --tab-transition-duration: 0.3s;
+    --color1: #31827c;
+    --color2: #95c68f;
+    --color3: #f7e9aa;
+    --color4: #fc8a80;
+    --color5: #fd4e6d;
+    --colorPreta: #000000;
+
+}
+
+body {
+    font-family: var(--font-family);
+    font-size: var(--font-size);
+    margin: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--color-primary);
+    opacity: 0.8;
+    border: 2px solid black;
+    box-shadow: 0 2px 5px;
+    height: var(--header-height);
+    width: calc(100% - 8 * var(--header-padding));
+    position: fixed;
+    top: 0;
+    left: var(--header-padding);
+    right: var(--header-padding);
+    padding: var(--header-padding);
+    margin-top: 5px;
+}
+
+.titulo,
+.select_lojas select {
+    width: 250px;
+    height: 40px;
+    background-color: #f0f0f0;
+    color: #333;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 8px 12px;
+    margin: 10px 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url('/static/img/seta_para_baixo.svg');
+    background-repeat: no-repeat;
+    background-position: right center;
+    padding-right: 30px;
+    cursor: pointer;
+}
+
+.select_lojas button {
+    width: 100px;
+    height: 40px;
+    appearance: nome;
+    box-shadow: 0 2px 5px #000000;
+    border-radius: 10px;
+    background-image: url('/static/img/Lupa.svg');
+    background-repeat: no-repeat;
+    background-position: right center;
+    padding-right: 30px;
+    font-size: 16px;
+
+}
+
+main {
+    display: flex;
+    flex-wrap: nowrap;
+    width: 99%;
+    padding-top: var(--main-padding-top);
+}
+
+article {
+    text-align: center;
+}
+
+.tabela,
+th,
+td {
+    border-collapse: collapse;
+    padding: 10px;
+    text-align: left;
+    border: 1px solid var(--color-border);
+}
+
+
+th {
+    background-color: var(--color-background-light);
+    color: #ccc;
+}
+.thx {
+    background-color: var(--color3);
+    color: #d44949;
+}
+
+.tab-container {
+    width: 100%;
+
+    margin: 0 auto;
+}
+
+.tabs {
+    display: flex;
+    border-bottom: 2px solid #575a65;
+}
+
+.tab-link {
+    flex: 1;
+    padding: 10px;
+    cursor: pointer;
+    background: #1f6764;
+    border: none;
+    outline: none;
+    transition: background 0.3s;
+    color: #ccc;
+}
+
+.tab-link:hover {
+    background: #575a65;
+}
+
+.tab-link.active {
+    background: #601848;
+    font-weight: bold;
+}
+
+.tab-content {
+    display: flex;
+
+}
+
+.tab-pane {
+    display: none;
+}
+
+.tab-pane.active {
+    display: block;
+}
+
+.glow-on-hover {
+    width: 100px;
+    height: 30px;
+    border: none;
+    outline: none;
+    color: var(--colorPreta);
+    background: #111;
+    cursor: pointer;
+    position: relative;
+    z-index: 0;
+    border-radius: 10px;
+}
+
+.glow-on-hover:before {
+    content: '';
+    background: linear-gradient(45deg, var(--color1), var(--color2), var(--color3), var(--color4), var(--color5), var(--color1));
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    background-size: 400%;
+    z-index: -1;
+    filter: blur(5px);
+    width: calc(100% + 4px);
+    height: calc(100% + 4px);
+    animation: glowing 20s linear infinite;
+    opacity: 0;
+    transition: opacity .3s ease-in-out;
+    border-radius: 10px;
+}
+
+.glow-on-hover:active {
+    color: var(--color-tab-active)
+}
+
+.glow-on-hover:active:after {
+    background: transparent;
+}
+
+.glow-on-hover:hover:before {
+    opacity: 1;
+}
+
+.glow-on-hover:after {
+    z-index: -1;
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: var(--color-tab-active);
+    left: 0;
+    top: 0;
+    border-radius: 10px;
+    border: 2px solid var(--color1);
+}
+
+@keyframes glowing {
+    0% {
+        background-position: 0 0;
+    }
+
+    50% {
+        background-position: 400% 0;
+    }
+
+    100% {
+        background-position: 0 0;
+    }
+}

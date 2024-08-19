@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LOJAS, IP, contatos </title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="navbar navbar-dark bg-primary text-white">
+        <div class="navbar-brand">
+            <h1>Lojas, IP´s e Contatos</h1>
+        </div>
+        <div class="navbar-brand">
+            <form action="/" method="get">
+                <select name="cnpj" id="cnpj" autofocus>
+                    {% for cnpj, razao_social in lojas %}
+                    <option value="{{ cnpj }}">{{ razao_social }}</option>
+                    {% endfor %}
+                </select>
+                <button type="submit">Consultar</button>
+            </form>
+        </div>
+        <div class="navbar-brand ">
+            <li><a href="{{ url_for('acesso') }}" class="text-danger">Entrar</a></li>
+        </div>
+    </header>
+    
+    <div class="container-fluid">
+        <div class="row">
+
+            <!-- Sidebar -->
+            <nav class="col-md-4 col-lg-2 d-md-block bg-light sidebar">
+                <div class="sidebar-sticky">
+
+                    <ul class="nav flex-column">
+                        {% if detalhes_loja['ips'] %}
+
+                        {% for SETOR, IP, MAQUINA in detalhes_loja['ips'] %}
+                        {% if loop.changed (SETOR)%}
+                        <li class="nav-item">
+                            <button class="btn btn-outline-primary btn-lg btn-block d-flex justify-content-between mt-1 "
+                                data-toggle="collapse" href="#{{SETOR | replace(' ', '') }}" aria-expanded="false"
+                                aria-controls="{{SETOR | replace(' ', '') }}">
+                                {{ SETOR}}
+                                <span data-feather="{{SETOR | replace(' ', '')}}" style="font-size: 1rem;">
+                                    <svg width="25" height="25" xmlns="http://www.w3.org/2000/svg">
+                                        <rect width="25" height="25" fill="lightblue" stroke="black" stroke-width="1" />
+                                        <text x="6" y="17" font-family="Arial" font-size="15" fill="darkblue"
+                                            font-weight="bold">IP</text>
+                                    </svg>
+                                </span>
+                            </button>
+
+
+                            {% endif %}
+                            <ul class="nav flex-column collapse border border-primary btn-block rounded"
+                                id="{{SETOR | replace(' ', '') }}">
+                                <li class="d-flex justify-content-around"><p>{{ IP }}</p><p>{{ MAQUINA }}</p></li>
+                            </ul>
+                            {% endfor %}
+                            {% endif %}
+
+                    </ul>
+
+                </div>
+            </nav>
+
+            <!-- Main Content -->
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+                <div
+                    class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    {% if detalhes_loja %}
+                    {% for RAZAO, cnpj, ie, ENDERECO, CEP in detalhes_loja['loja'] %}
+                    <p>{{RAZAO}}</p>
+                    <p>{{cnpj}}</p>
+                    <p>{{ENDERECO}}</p>
+                    <p>{{CEP}}</p>
+                </div>
+                {% endfor %}
+                <div>
+                    <section>
+                        {% if detalhes_loja['contatos'] %}
+                        {% for id ,SETOR, TELEFONE, TIPO, CONTATO in detalhes_loja['contatos'] %}
+                        {% if loop.changed (SETOR)%}
+                        <div class="card card-body my-3" button class="btn btn-primary" type="button"
+                            data-toggle="collapse" data-target="#setor{{id | trim }}" aria-expanded="false"
+                            aria-controls="setor{{id | trim }}">
+                            {{SETOR}}
+                        </div>
+                        {% endif %}
+                        <div class="collapse alert alert-primary" id="setor{{id | trim }}">
+                            {{CONTATO}} - {{TELEFONE}} - {{TIPO}}
+                        </div>
+                        {% endfor %}
+                        {% endif %}
+                        {% endif %}
+                    </section>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer mt-auto py-3 bg-primary  position-sticky">
+        <div class="d-flex justify-content-around">
+            <span class="text-whited">&copy; 2024 Dashboard</span>
+            <span class="text-whited">Versão Beta</span>
+        </div>
+    </footer>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>
