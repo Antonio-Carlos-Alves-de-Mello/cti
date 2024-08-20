@@ -1,74 +1,76 @@
 {% extends 'sistema/base.html' %}
 
 {% block header %}
-<h1>{% block title %}Requisições{% endblock %}</h1>
 {% endblock %}
 
 {% block content %}
-    <div class="container mw-100 p-3">
-        <div class="row">
-            <!-- Formulário de Requisição -->
-            <div class="col-md-4 mb-3">
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title text-center">
-                            <a class="collapsed" data-toggle="collapse" href="#collapseForm" role="button" aria-expanded="false" aria-controls="collapseForm">
-                                {% block title %}Requisições{% endblock %}
-                            </a>
-                        </h3>
-                    </div>
-                    <div id="collapseForm" class="collapse">
-                        <div class="card-body">
-                            <form id="productForm" novalidate>
-                                <div class="mb-3">
-                                    <label for="nomeLoja" class="form-label">Loja</label>
-                                    <input type="text" class="form-control" id="nomeLoja" placeholder="Loja" required>
-                                    <div class="invalid-feedback">
-                                        Forneça um nome de produto.
-                                    </div>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="numeroChamado" class="form-label">Numero do chamado</label>
-                                    <input type="text" class="form-control" id="numeroChamado" placeholder="Numero do chamado" required>
-                                    <div class="invalid-feedback">
-                                        Forneça um número de chamado.
-                                    </div>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="material" class="form-label">Material</label>
-                                    <input type="text" class="form-control" id="material" placeholder="Material" required>
-                                    <div class="invalid-feedback">
-                                        Forneça um material.
-                                    </div>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="qnt" class="form-label">Quantidade</label>
-                                    <input type="text" class="form-control" id="qnt" placeholder="Quantidade" required>
-                                    <div class="invalid-feedback">
-                                        Forneça uma quantidade.
-                                    </div>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="observacao" class="form-label">Observação</label>
-                                    <input type="text" class="form-control" id="observacao" placeholder="Observação" required>
-                                    <div class="invalid-feedback">
-                                        Forneça uma observação.
-                                    </div>
-                                </div>
-                                <button type="submit" class="btn btn-primary btn-block">Registro</button>
-                            </form>
-                        </div>
+<div class="container mw-100 p-3">
+    <div class="row">
+        <!-- Formulário de Requisição -->
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title text-center">
+                        <a class="collapsed" data-toggle="collapse" href="#collapseForm" role="button"
+                            aria-expanded="false" aria-controls="collapseForm">
+                            {% block title %}Requisições{% endblock %}
+                        </a>
+                    </h3>
+                </div>
+                <div id="collapseForm" class="collapse">
+                    <div class="card-body">
+                        <form id="productForm" novalidate>
+                            <div class="mb-3">
+                                <label for="nomeLoja" class="form-label">Loja</label>
+                                <input list="cnpj" class="form-control" id="nomeLoja" placeholder="Loja" required>
+                                <datalist id="cnpj">
+                                    <option value="COMERCIAL DE ALIMENTOS CERES S/A"></option>
+                                </datalist>
+                                <div class="invalid-feedback">Selecione uma loja válida.</div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="numeroChamado" class="form-label">Número do Chamado</label>
+                                <input type="text" class="form-control" id="numeroChamado"
+                                    placeholder="Número do Chamado" required>
+                                <div class="invalid-feedback">Forneça um número de chamado.</div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="material" class="form-label">Material</label>
+                                <input list="id_material" class="form-control" id="material" placeholder="Material"
+                                    required>
+                                <datalist id="id_material">
+                                    <option value="id_material">Nome Material</option>
+                                </datalist>
+                                <div class="invalid-feedback">Forneça um material.</div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="qnt" class="form-label">Quantidade</label>
+                                <input type="number" class="form-control" id="qnt" placeholder="Quantidade" required>
+                                <div class="invalid-feedback">Forneça uma quantidade.</div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="observacao" class="form-label">Observação</label>
+                                <input type="text" class="form-control" id="observacao" placeholder="Observação"
+                                    required>
+                                <div class="invalid-feedback">Forneça uma observação.</div>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block">Registrar</button>
+                        </form>
                     </div>
                 </div>
             </div>
-            <!-- Tabela de Requisições -->
-            <div class="col-md-8 mb-4">
-                <div class="card">
+        </div>
+
+        <!-- Tabela de Requisições -->
+        <div class="col-md-8 mb-4">
+            <div class="card">
+                <form  action="/sistema/requisicoes" method="POST">
                     <div class="card-header">
                         <h3 class="text-center">Requisições</h3>
-						<button type="button" class="btn btn-primary">Enviar</button>
+                        <button type="submit" class="btn btn-primary" >Enviar</button>
                     </div>
                     <div class="card-body">
+
                         <table class="table table-striped">
                             <thead>
                                 <tr>
@@ -81,14 +83,70 @@
                                     <th scope="col">Ações</th>
                                 </tr>
                             </thead>
+
                             <tbody id="productTableBody">
-                                <form id="emailForm" novalidate >
-								</form>
                             </tbody>
+
                         </table>
-                    </div>
-                </div>
+                </form>
             </div>
         </div>
     </div>
-    {% endblock %}
+</div>
+</div>
+
+<script>
+    // Função para adicionar requisição à tabela
+    document.getElementById('productForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+        if (!this.checkValidity()) {
+            event.stopPropagation();
+            this.classList.add('was-validated');
+            return;
+        }
+
+        const tableBody = document.getElementById('productTableBody');
+        const newRow = document.createElement('tr');
+
+        const idCell = document.createElement('td');
+        const id = tableBody.rows.length + 1;
+        idCell.textContent = id;
+
+        const nomeLojaCell = document.createElement('td');
+        nomeLojaCell.textContent = document.getElementById('nomeLoja').value;
+
+        const numeroChamadoCell = document.createElement('td');
+        numeroChamadoCell.textContent = document.getElementById('numeroChamado').value;
+
+        const materialCell = document.createElement('td');
+        materialCell.textContent = document.getElementById('material').value;
+
+        const qntCell = document.createElement('td');
+        qntCell.textContent = document.getElementById('qnt').value;
+
+        const dateCell = document.createElement('td');
+        dateCell.textContent = new Date().toLocaleDateString();
+
+        const actionCell = document.createElement('td');
+        const deleteButton = document.createElement('button');
+        deleteButton.className = 'btn btn-danger';
+        deleteButton.textContent = 'Excluir';
+        deleteButton.onclick = function () {
+            tableBody.removeChild(newRow);
+        };
+        actionCell.appendChild(deleteButton);
+
+        newRow.append(idCell, nomeLojaCell, numeroChamadoCell, materialCell, qntCell, dateCell, actionCell);
+        tableBody.appendChild(newRow);
+
+        // Resetar o formulário e validações
+        this.reset();
+        this.classList.remove('was-validated');
+    });
+
+    // Função para enviar dados (simulação)
+    function enviarDados() {
+        alert('Dados enviados com sucesso!');
+    }
+</script>
+{% endblock %}
